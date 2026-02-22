@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Primary Meta Tags -->
+    <title>BTS World Tour 'ARIRANG' 2026-2027 | Official Premium Tickets</title>
+    <meta name="title" content="BTS World Tour 'ARIRANG' 2026-2027 | Official Premium Tickets" />
+    <meta name="description" content="The historic return of the icons. Experience the 'ARIRANG' World Tour across 40+ global stadiums. Secure exclusive VIP Residency & Standard tickets for Seoul, LA, London, Tokyo, and beyond." />
+
+    <!-- Open Graph / Facebook / KakaoTalk -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="BTS World Tour 'ARIRANG' 2026-2027 | Official Premium Tickets" />
+    <meta property="og:description" content="The historic return of the icons. Experience the 'ARIRANG' World Tour across 40+ global stadiums. Secure exclusive VIP Residency & Standard tickets for Seoul, LA, London, Tokyo, and beyond." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1200&h=630&fit=crop&q=80" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="BTS ARIRANG World Tour" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BTS World Tour 'ARIRANG' 2026-2027 | Official Premium Tickets" />
+    <meta name="twitter:description" content="The historic return of the icons. Experience the 'ARIRANG' World Tour across 40+ global stadiums. Secure exclusive VIP Residency & Standard tickets for Seoul, LA, London, Tokyo, and beyond." />
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1200&h=630&fit=crop&q=80" />
+
+    <!-- Schema.org -->
+    <meta itemprop="name" content="BTS World Tour 'ARIRANG' 2026-2027 | Official Premium Tickets" />
+    <meta itemprop="description" content="The historic return of the icons. Experience the 'ARIRANG' World Tour across 40+ global stadiums. Secure exclusive VIP Residency & Standard tickets for Seoul, LA, London, Tokyo, and beyond." />
+    <meta itemprop="image" content="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1200&h=630&fit=crop&q=80" />
+
+    <!-- Telegram -->
+    <meta name="telegram:channel" content="BTS ARIRANG 2026-2027" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "BTS World Tour 'ARIRANG' 2026-2027",
+      "description": "The historic return of the icons. Experience the 'ARIRANG' World Tour across 40+ global stadiums.",
+      "image": "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=1200&h=630&fit=crop&q=80",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "performer": {
+        "@type": "MusicGroup",
+        "name": "BTS"
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "BTS ARIRANG World Tour"
+      }
+    }
+    </script>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Arena injection removal script -->
+    <script>
+      (function() {
+        function removeArenaElements() {
+          document.querySelectorAll('a, div, span, p, iframe, section, footer').forEach(function(el) {
+            var text = el.textContent || '';
+            var href = el.getAttribute('href') || '';
+            if (
+              text.includes('arena.ai') ||
+              text.includes('Built with Arena') ||
+              text.includes('Made with Arena') ||
+              text.includes('Code Arena') ||
+              href.includes('arena.ai')
+            ) {
+              el.style.display = 'none';
+              el.remove();
+            }
+          });
+          document.querySelectorAll('[style*="position: fixed"], [style*="position:fixed"]').forEach(function(el) {
+            var text = el.textContent || '';
+            if (text.includes('Arena') || text.includes('arena')) {
+              el.style.display = 'none';
+              el.remove();
+            }
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', removeArenaElements);
+        } else {
+          removeArenaElements();
+        }
+        window.addEventListener('load', removeArenaElements);
+        setTimeout(removeArenaElements, 500);
+        setTimeout(removeArenaElements, 1500);
+        setTimeout(removeArenaElements, 3000);
+        var observer = new MutationObserver(function() { removeArenaElements(); });
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
