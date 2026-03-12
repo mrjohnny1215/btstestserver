@@ -10,11 +10,14 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@solana/web3.js": "^1.98.4",
     "clsx": "2.1.1",
+    "html2pdf.js": "^0.14.0",
     "qrcode.react": "^4.2.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "tailwind-merge": "3.4.0"
+    "tailwind-merge": "3.4.0",
+    "tronweb": "^6.2.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.17",

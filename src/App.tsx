@@ -3,6 +3,26 @@ import { tourData, type Region, type Show } from "./data/tourData";
 import { CheckoutModal } from "./components/CheckoutModal";
 import { VideoBackground } from "./components/VideoBackground";
 
+const UsdtIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="16" cy="16" r="16" fill="#26A17B"/>
+    <rect x="9" y="7" width="14" height="4" fill="white"/>
+    <rect x="14" y="11" width="4" height="14" fill="white"/>
+    <ellipse cx="16" cy="18" rx="10" ry="3" stroke="white" strokeWidth="2" fill="none"/>
+  </svg>
+);
+
+const UsdcIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <div className={`relative ${className}`}>
+    <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-sm"></div>
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/c/ca/USD_Coin_logo_%28cropped%29.png  " 
+      alt="USDC" 
+      className="relative w-full h-full object-contain drop-shadow-lg"
+    />
+  </div>
+);
+
 const LEGAL_PAGES = {
   SUPPORT: { 
     title: "Global Customer Support", 
@@ -61,7 +81,7 @@ function HeroSection({ onScrollToDates }: { onScrollToDates: () => void }) {
   return (
     <div className="relative flex flex-col items-center justify-center pt-24 sm:pt-28 md:pt-32 pb-4 md:pb-8 overflow-hidden px-4 md:px-6 z-10 text-center">
       <div className="relative z-30 max-w-md w-full flex flex-col items-center">
-        <div className="mb-2 md:mb-3 px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
+        <div className="mb-2 md:mb-3 px-3 md:px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
           <span className="text-white/90 font-black tracking-[0.3em] md:tracking-[0.4em] text-[9px] md:text-[11px] uppercase drop-shadow-lg">Official Booking Portal • 2026-2027</span>
         </div>
         
@@ -222,14 +242,17 @@ export function App() {
         <div className="max-w-md mx-auto w-full px-4 md:px-6 mb-3 md:mb-4 relative z-30 flex flex-col items-center">
           <span className="text-[9px] md:text-xs font-black text-indigo-300/60 uppercase tracking-[0.4em] mb-3 md:mb-4 text-center italic">Exclusive Payment Gateway</span>
           <div className="flex flex-nowrap justify-center items-center gap-2 md:gap-3 w-full">
+            
             <div className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 shadow-[0_0_25px_rgba(16,185,129,0.1)] transition-all hover:border-emerald-500/40">
-              <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" className="w-4 h-4 md:w-5 md:h-5" />
+              <UsdtIcon className="w-4 h-4 md:w-5 md:h-5" />
               <span className="text-[9px] md:text-[11px] font-black text-white tracking-widest uppercase whitespace-nowrap">USDT <span className="text-emerald-400 font-normal text-[8px] md:text-[9px]">(TRC-20)</span></span>
             </div>
-            <div className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 rounded-2xl border border-orange-500/20 bg-orange-500/5 shadow-[0_0_25px_rgba(249,115,22,0.1)] transition-all hover:border-orange-500/40">
-              <img src="https://cryptologos.cc/logos/monero-xmr-logo.png" alt="XMR" className="w-4 h-4 md:w-5 md:h-5" />
-              <span className="text-[9px] md:text-[11px] font-black text-white tracking-widest uppercase whitespace-nowrap">XMR <span className="text-orange-400 font-normal text-[8px] md:text-[9px]">(Monero)</span></span>
+            
+            <div className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-4 py-2.5 md:py-3 rounded-2xl border border-blue-500/20 bg-blue-500/5 shadow-[0_0_25px_rgba(59,130,246,0.1)] transition-all hover:border-blue-500/40">
+              <UsdcIcon className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="text-[9px] md:text-[11px] font-black text-white tracking-widest uppercase whitespace-nowrap">USDC <span className="text-blue-400 font-normal text-[8px] md:text-[9px]">(Solana)</span></span>
             </div>
+            
           </div>
         </div>
 

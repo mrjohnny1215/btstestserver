@@ -22,7 +22,27 @@ function formatFullDateTime(dateStr: string, day: string) {
 }
 
 function getArtistImage(show: Show) {
-    return show.imageUrl || "https://i.scdn.co/image/ab6761610000e5eb5704a64f34fe29ff73ab56bb";
+  return show.imageUrl?.trim() || "https://i.scdn.co/image/ab6761610000e5eb5704a64f34fe29ff73ab56bb  ";
+}
+
+function UsdtIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/0/01/USDT_Logo.png  " 
+      alt="USDT" 
+      className={className}
+    />
+  );
+}
+
+function UsdcIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <img 
+      src="https://upload.wikimedia.org/wikipedia/commons/c/ca/USD_Coin_logo_%28cropped%29.png  " 
+      alt="USDC" 
+      className={className}
+    />
+  );
 }
 
 interface CheckoutModalProps {
@@ -37,7 +57,7 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
   const [vipQuantity, setVipQuantity] = useState(0);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [crypto, setCrypto] = useState<"USDT" | "XMR">("USDT");
+  const [crypto, setCrypto] = useState<"USDT" | "USDC">("USDT");
   const [orderNumber, setOrderNumber] = useState("");
   const [confirmedTxId, setConfirmedTxId] = useState("");
 
@@ -51,7 +71,7 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
   const selectedTicketType = vipQuantity > 0 ? "vip" : (standardQuantity > 0 ? "standard" : "none");
 
   const totalUSDT = totalPrice; 
-  const totalXMR = (totalPrice / 150).toFixed(4);
+  const totalUSDC = totalPrice;
 
   const isEmailValid = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com|me\.com|mac\.com)$/i.test(email);
   const showEmailError = email.length > 0 && !isEmailValid;
@@ -133,6 +153,9 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
                     alt="BTS World Tour" 
                     className="w-14 h-14 object-cover rounded-xl mr-3 border border-white/10" 
                     style={{ flexShrink: 0, objectPosition: 'center' }}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
                 />
                 <div className="flex-1 min-w-0">
                     <h2 className="text-xs font-black leading-tight mb-0.5 tracking-tighter uppercase truncate">{show.city.toUpperCase()}</h2>
@@ -151,12 +174,12 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
                     <h3 className="text-base font-black text-gray-900 tracking-tighter uppercase mb-2">Select Tickets</h3>
                     <div className="p-2 rounded-xl border border-gray-200 bg-white flex items-center gap-2 shadow-sm">
                         <div className="flex gap-1.5">
-                            <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" className="w-4 h-4" />
-                            <img src="https://cryptologos.cc/logos/monero-xmr-logo.png" alt="XMR" className="w-4 h-4" />
+                          <UsdtIcon />
+                          <UsdcIcon />
                         </div>
                         <div>
                             <p className="text-[9px] font-black text-gray-900 uppercase mb-0.5">Exclusive Gateway</p>
-                            <p className="text-[8px] font-bold text-gray-500">Payments accepted <span className="text-red-600 underline">ONLY</span> in USDT & XMR.</p>
+                            <p className="text-[8px] font-bold text-gray-500">Payments accepted <span className="text-red-600 underline">ONLY</span> in USDT & USDC (Solana).</p>
                         </div>
                     </div>
                     <ul className="space-y-2">
@@ -244,14 +267,14 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
                         <h4 className="font-black text-[9px] uppercase text-gray-800 mb-2">Select Currency</h4>
                         <div className="grid grid-cols-2 gap-2">
                             <button onClick={() => setCrypto("USDT")} className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all ${crypto === "USDT" ? "border-green-500 bg-green-50" : "border-gray-200 bg-gray-50"}`}>
-                                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" className="w-4 h-4 mb-0.5" />
+                                <UsdtIcon className="w-4 h-4 mb-0.5" />
                                 <div className="text-base font-black text-green-800">{totalUSDT.toLocaleString()}</div>
                                 <div className="text-[7px] font-bold text-green-600/70 mt-0.5">1 USDT = $1.00</div>
                             </button>
-                            <button onClick={() => setCrypto("XMR")} className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all ${crypto === "XMR" ? "border-orange-500 bg-orange-50" : "border-gray-200 bg-gray-50"}`}>
-                                <img src="https://cryptologos.cc/logos/monero-xmr-logo.png" className="w-4 h-4 mb-0.5" />
-                                <div className="text-base font-black text-orange-800">{totalXMR}</div>
-                                <div className="text-[7px] font-bold text-orange-600/70 mt-0.5">1 XMR ≈ $150</div>
+                            <button onClick={() => setCrypto("USDC")} className={`flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all ${crypto === "USDC" ? "border-blue-500 bg-blue-50" : "border-gray-200 bg-gray-50"}`}>
+                                <UsdcIcon className="w-4 h-4 mb-0.5" />
+                                <div className="text-base font-black text-blue-800">{totalUSDC.toLocaleString()}</div>
+                                <div className="text-[7px] font-bold text-blue-600/70 mt-0.5">1 USDC = $1.00 (Solana)</div>
                             </button>
                         </div>
                     </div>
@@ -348,6 +371,9 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
                                     alt="BTS" 
                                     className="w-16 h-16 object-cover rounded-xl shadow-md border border-white/10" 
                                     style={{ flexShrink: 0, objectPosition: 'center' }}
+                                    onError={(e) => {
+                                      (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
                                 />
                                 <div className="flex-1 min-w-0">
                                     <span className="text-[7px] font-black uppercase tracking-[0.2em] text-[#26A17B] mb-1 block">Reservation Confirmed</span>
@@ -392,14 +418,14 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
                                         <p className="text-lg font-black text-[#26A17B] tracking-tighter">{formatPrice(totalPrice)}</p>
                                     </div>
                                     
-                                    <div className={`relative p-3 rounded-2xl shadow-sm border-2 col-span-2 ${crypto === 'USDT' ? 'bg-green-50 border-green-500' : 'bg-orange-50 border-orange-500'}`}>
+                                    <div className={`relative p-3 rounded-2xl shadow-sm border-2 col-span-2 ${crypto === 'USDT' ? 'bg-green-50 border-green-500' : 'bg-blue-50 border-blue-500'}`}>
                                         <div className="flex items-center gap-1.5 mb-1.5">
-                                            <svg className={`w-3 h-3 ${crypto === 'USDT' ? 'text-green-600' : 'text-orange-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                                            <p className={`text-[7px] font-black uppercase tracking-widest ${crypto === 'USDT' ? 'text-green-600/70' : 'text-orange-600/70'}`}>Method</p>
+                                            <svg className={`w-3 h-3 ${crypto === 'USDT' ? 'text-green-600' : 'text-blue-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                                            <p className={`text-[7px] font-black uppercase tracking-widest ${crypto === 'USDT' ? 'text-green-600/70' : 'text-blue-600/70'}`}>Method</p>
                                         </div>
                                         <div className="flex items-center gap-1.5">
-                                            <span className={`w-2 h-2 rounded-full shadow-sm ${crypto === "USDT" ? "bg-green-500" : "bg-orange-500"}`}></span>
-                                            <p className="text-sm font-black text-gray-900">{crypto}</p>
+                                            <span className={`w-2 h-2 rounded-full shadow-sm ${crypto === "USDT" ? "bg-green-500" : "bg-blue-500"}`}></span>
+                                            <p className="text-sm font-black text-gray-900">{crypto} {crypto === "USDC" && <span className="text-gray-500 text-xs font-bold">(Solana)</span>}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -426,7 +452,7 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
                                 </div>
 
                                 <div className="relative p-1.5 bg-white rounded-xl border-2 border-gray-900 shadow-inner mb-2">
-                                    <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${orderNumber}`} className="w-32 h-32 mix-blend-multiply block" />
+                                  <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=  ${orderNumber}`} className="w-32 h-32 mix-blend-multiply block" />
                                 </div>
 
                                 <div className="w-full border-t border-dashed border-gray-200 pt-2.5 mb-2">
@@ -444,6 +470,7 @@ export function CheckoutModal({ show, onClose, hapticNotification }: CheckoutMod
                                     </p>
                                 </div>
                             </div>
+                            
                             
                             <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-50"></div>
                         </div>
