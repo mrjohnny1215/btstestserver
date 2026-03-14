@@ -55,3 +55,8 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* 👇 지도 저작권 표시 (Leaflet | OpenStreetMap) 숨김 */
+.leaflet-control-attribution {
+  display: none !important;
+}

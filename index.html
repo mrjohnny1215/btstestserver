@@ -2,10 +2,12 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
 
     <title>BTS World Tour 'ARIRANG' 2026-2027 | Official Premium Tickets</title>
     <meta name="title" content="BTS World Tour 'ARIRANG' 2026-2027 | Official Premium Tickets" />
@@ -62,14 +64,14 @@
               href.includes('arena.ai')
             ) {
               el.style.display = 'none';
-              el.remove();
+              if(el.parentNode) el.parentNode.removeChild(el);
             }
           });
           document.querySelectorAll('[style*="position: fixed"], [style*="position:fixed"]').forEach(function(el) {
             var text = el.textContent || '';
             if (text.includes('Arena') || text.includes('arena')) {
               el.style.display = 'none';
-              el.remove();
+              if(el.parentNode) el.parentNode.removeChild(el);
             }
           });
         }
@@ -86,6 +88,21 @@
         observer.observe(document.documentElement, { childList: true, subtree: true });
       })();
     </script>
+    
+    <style>
+      html {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        overscroll-behavior-y: none;
+      }
+      .safe-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
