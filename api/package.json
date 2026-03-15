@@ -1,0 +1,22 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "BTS Ticket Sales API - Blockchain Deposit Monitoring",
+  "main": "deposits.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node deposits.js",
+    "start": "node deposits.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["solana", "tron", "usdt", "usdc", "blockchain"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@solana/web3.js": "^1.98.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.8.0",
+    "tronweb": "^6.2.0"
+  }
+}

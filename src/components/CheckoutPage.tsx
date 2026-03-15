@@ -37,7 +37,6 @@ export function CheckoutPage({
   const isEmailValid = /^[a-zA-Z0-9._%+-]+@(gmail\.com|icloud\.com|me\.com|mac\.com)$/i.test(email);
   const canProceed = name.length > 2 && isEmailValid;
 
-  // 가상의 좌석 번호 생성 (실제 구현 시 섹션 데이터에서 가져와야 함)
   const getSeatNumbers = () => {
     const seats = [];
     for (let i = 0; i < quantity; i++) {
@@ -52,19 +51,17 @@ export function CheckoutPage({
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
-      {/* 헤더 */}
       <div className="bg-black text-white px-4 py-4 flex items-center justify-between sticky top-0 z-10">
         <button onClick={onBack} className="text-sm font-bold uppercase tracking-widest flex items-center gap-2 hover:text-gray-300">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           BACK
         </button>
         <h2 className="text-lg font-black uppercase tracking-widest">CHECKOUT</h2>
-        <div className="w-10"></div> {/* 공간 확보용 */}
+        <div className="w-10"></div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-2xl mx-auto w-full">
         
-        {/* 1. 공연 및 좌석 정보 카드 (Ticketmaster 스타일) */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="p-5 border-b border-gray-100">
             <h3 className="text-xl font-black uppercase leading-tight mb-1 text-gray-900">
@@ -91,7 +88,6 @@ export function CheckoutPage({
             </div>
           </div>
           
-          {/* 좌석 상세 리스트 */}
           <div className="bg-gray-50 p-5 space-y-3">
             {seatNumbers.map((seat, idx) => (
               <div key={idx} className="flex justify-between items-center text-sm border-b border-gray-200 last:border-0 pb-2 last:pb-0">
@@ -102,11 +98,9 @@ export function CheckoutPage({
           </div>
         </div>
 
-        {/* 2. 결제 수단 선택 (사각형 카드 스타일) */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
           <h4 className="text-sm font-black uppercase text-gray-900 mb-4 tracking-wider">Payment Method</h4>
           <div className="grid grid-cols-2 gap-3">
-            {/* USDT 카드 */}
             <button 
               onClick={() => setCrypto("USDT")}
               className={`relative p-4 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-2 ${
@@ -129,7 +123,6 @@ export function CheckoutPage({
               )}
             </button>
 
-            {/* USDC 카드 */}
             <button 
               onClick={() => setCrypto("USDC")}
               className={`relative p-4 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-2 ${
@@ -154,7 +147,6 @@ export function CheckoutPage({
           </div>
         </div>
 
-        {/* 3. 배송 정보 입력 */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 space-y-4">
           <h4 className="text-sm font-black uppercase text-gray-900 tracking-wider">Delivery Information</h4>
           <div>
@@ -184,7 +176,6 @@ export function CheckoutPage({
           </div>
         </div>
 
-        {/* 4. 주문 요약 (간략화) */}
         <div className="bg-gray-100 rounded-xl p-4 flex justify-between items-center">
            <div>
              <p className="text-[10px] font-bold text-gray-500 uppercase">Total Amount</p>
@@ -198,7 +189,6 @@ export function CheckoutPage({
 
       </div>
 
-      {/* 하단 고정 버튼 영역 */}
       <div className="p-4 bg-white border-t border-gray-200 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
         <div className="flex justify-between items-center mb-3">
           <span className="text-sm font-bold text-gray-500 uppercase">Total</span>

@@ -7,16 +7,12 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background: #000;
+  background: #ffffff;
+  color: #1a1a1a;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #555; }
 
 @keyframes float {
   0%, 100% { transform: translateY(0) translateX(0); }
@@ -54,9 +50,4 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* 👇 지도 저작권 표시 (Leaflet | OpenStreetMap) 숨김 */
-.leaflet-control-attribution {
-  display: none !important;
 }

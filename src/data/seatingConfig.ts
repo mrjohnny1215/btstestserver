@@ -1,10 +1,11 @@
 export interface SeatingSection {
   id: string;
   name: string;
-  type: 'STANDARD' | 'VIP' | 'STANDING';
+  type: 'STANDARD' | 'STANDING';
   rows: number;
   seatsPerRow: number;
-  price: number; 
+  price: number;
+  isSoldOut?: boolean;
   isStanding?: boolean;
 }
 
@@ -13,184 +14,598 @@ export interface VenueConfig {
   sections: SeatingSection[];
 }
 
-/**
- * 활성화된 공연장 좌석 구성 데이터 (실제 배치도 기반)
- * ✅ 수정 사항:
- * 1. 실제 Ticketmaster 배치도를 기반으로 Section ID 및 이름 매핑
- * 2. 무대와의 거리에 따른 현실적인 가격 책정 (Floor > Lower > Club > Upper)
- * 3. 가격순 자동 정렬 (비싼 순서대로)
- */
-export const activeVenuesConfig: Record<string, VenueConfig> = {
-  // =======================
-  // 🇺🇸 NORTH AMERICA (북미)
-  // =======================
+function processSections(sections: SeatingSection[]): SeatingSection[] {
+  return sections.map(section => ({
+    ...section,
+    isSoldOut: section.price <= 300
+  }));
+}
 
-  // --- Tier 1: Premium Markets (LA, Las Vegas, Dallas) ---
-  "SoFi Stadium": {
-    venueName: "SoFi Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 1250 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 42, price: 980 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 20, seatsPerRow: 52, price: 820 },
-      { id: "200", name: "Section 200", type: "STANDARD", rows: 25, seatsPerRow: 52, price: 650 },
-      { id: "300", name: "Section 300", type: "STANDARD", rows: 30, seatsPerRow: 52, price: 520 },
-      { id: "400", name: "Section 400", type: "STANDARD", rows: 35, seatsPerRow: 52, price: 420 },
-    ]
+export const activeVenuesConfig: Record<string, VenueConfig> = {
+  "Goyang Stadium": {
+    venueName: "Goyang Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 180 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 180 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 150 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 150 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 130 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 130 },
+    ]),
   },
-  "Allegiant Stadium": {
-    venueName: "Allegiant Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 1180 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 960 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 20, seatsPerRow: 52, price: 790 },
-      { id: "200", name: "Section 200", type: "STANDARD", rows: 25, seatsPerRow: 52, price: 620 },
-      { id: "300", name: "Section 300", type: "STANDARD", rows: 30, seatsPerRow: 52, price: 490 },
-      { id: "400", name: "Section 400", type: "STANDARD", rows: 35, seatsPerRow: 52, price: 420 },
-    ]
+  "Busan Asiad Stadium": {
+    venueName: "Busan Asiad Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 170 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 170 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 140 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 140 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 120 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 120 },
+    ]),
+  },
+  "Tokyo Dome": {
+    venueName: "Tokyo Dome",
+    sections: processSections([
+      { id: "A1", name: "Arena A1", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 450 },
+      { id: "A2", name: "Arena A2", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 450 },
+      { id: "B1", name: "Arena B1", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 400 },
+      { id: "B2", name: "Arena B2", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 400 },
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 350 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 350 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 300 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 300 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 180 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 180 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 160 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 160 },
+    ]),
+  },
+  "Kyocera Dome": {
+    venueName: "Kyocera Dome",
+    sections: processSections([
+      { id: "A1", name: "Arena A1", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 420 },
+      { id: "A2", name: "Arena A2", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 420 },
+      { id: "B1", name: "Arena B1", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 380 },
+      { id: "B2", name: "Arena B2", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 380 },
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 320 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 320 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 280 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 280 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 170 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 170 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 150 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 150 },
+    ]),
+  },
+  "Vantelin Dome": {
+    venueName: "Vantelin Dome",
+    sections: processSections([
+      { id: "A1", name: "Arena A1", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 380 },
+      { id: "A2", name: "Arena A2", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 380 },
+      { id: "B1", name: "Arena B1", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 340 },
+      { id: "B2", name: "Arena B2", type: "STANDARD", rows: 10, seatsPerRow: 20, price: 340 },
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 280 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 280 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 240 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 15, seatsPerRow: 25, price: 240 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 170 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 170 },
+    ]),
+  },
+
+  "Raymond James Stadium": {
+    venueName: "Raymond James Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 550 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 550 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 450 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 450 },
+      { id: "107", name: "Section 107", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 400 },
+      { id: "108", name: "Section 108", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 400 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 220 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 220 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 190 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 190 },
+    ]),
+  },
+  "Sun Bowl Stadium": {
+    venueName: "Sun Bowl Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 380 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 380 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 320 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 320 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 260 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 260 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 220 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 220 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 180 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 180 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 150 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 150 },
+    ]),
   },
   "AT&T Stadium": {
     venueName: "AT&T Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 1150 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 950 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 25, seatsPerRow: 52, price: 780 },
-      { id: "200", name: "Section 200", type: "STANDARD", rows: 30, seatsPerRow: 52, price: 610 },
-      { id: "300", name: "Section 300", type: "STANDARD", rows: 35, seatsPerRow: 52, price: 480 },
-      { id: "400", name: "Section 400", type: "STANDARD", rows: 40, seatsPerRow: 52, price: 420 },
-    ]
-  },
-
-  // --- Tier 2: Major Markets (NJ, Chicago, Toronto) ---
-  "MetLife Stadium": {
-    venueName: "MetLife Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 1100 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 920 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 20, seatsPerRow: 50, price: 750 },
-      { id: "200", name: "Section 200", type: "STANDARD", rows: 25, seatsPerRow: 50, price: 580 },
-      { id: "300", name: "Section 300", type: "STANDARD", rows: 30, seatsPerRow: 50, price: 390 },
-    ]
-  },
-  "Soldier Field": {
-    venueName: "Soldier Field",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 1050 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 900 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 18, seatsPerRow: 50, price: 720 },
-      { id: "200", name: "Section 200", type: "STANDARD", rows: 22, seatsPerRow: 50, price: 560 },
-      { id: "300", name: "Section 300", type: "STANDARD", rows: 25, seatsPerRow: 50, price: 390 },
-    ]
-  },
-  "Rogers Centre": {
-    venueName: "Rogers Centre",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 10, seatsPerRow: 38, price: 980 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 12, seatsPerRow: 38, price: 850 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 15, seatsPerRow: 48, price: 680 },
-      { id: "200", name: "Section 200", type: "STANDARD", rows: 20, seatsPerRow: 48, price: 540 },
-      { id: "500", name: "Section 500", type: "STANDARD", rows: 25, seatsPerRow: 48, price: 390 },
-    ]
-  },
-
-  // --- Tier 3: Standard Markets (Tampa, Stanford, Europe Major) ---
-  "Raymond James Stadium": {
-    venueName: "Raymond James Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 1020 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 890 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 20, seatsPerRow: 50, price: 680 },
-      { id: "200", name: "Section 200", type: "STANDARD", rows: 25, seatsPerRow: 50, price: 520 },
-      { id: "300", name: "Section 300", type: "STANDARD", rows: 30, seatsPerRow: 50, price: 380 },
-    ]
+    sections: processSections([
+      { id: "C100", name: "Club 100", type: "STANDARD", rows: 15, seatsPerRow: 20, price: 650 },
+      { id: "C101", name: "Club 101", type: "STANDARD", rows: 15, seatsPerRow: 20, price: 650 },
+      { id: "C102", name: "Club 102", type: "STANDARD", rows: 15, seatsPerRow: 20, price: 600 },
+      { id: "C103", name: "Club 103", type: "STANDARD", rows: 15, seatsPerRow: 20, price: 600 },
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 550 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 550 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 450 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 450 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 380 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 380 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 250 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 250 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 200 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 200 },
+    ]),
   },
   "Stanford Stadium": {
     venueName: "Stanford Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 980 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 880 },
-      { id: "L1", name: "Section 100", type: "STANDARD", rows: 15, seatsPerRow: 50, price: 650 },
-      { id: "U1", name: "Section 300", type: "STANDARD", rows: 20, seatsPerRow: 50, price: 380 },
-    ]
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 480 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 480 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 340 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 340 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+    ]),
   },
-  "Tottenham Hotspur Stadium": {
-    venueName: "Tottenham Hotspur Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 1050 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 920 },
-      { id: "L1", name: "Section 100", type: "STANDARD", rows: 15, seatsPerRow: 48, price: 750 },
-      { id: "L2", name: "Section 200", type: "STANDARD", rows: 20, seatsPerRow: 48, price: 620 },
-      { id: "L3", name: "Section 300", type: "STANDARD", rows: 25, seatsPerRow: 48, price: 510 },
-      { id: "L4", name: "Section 400", type: "STANDARD", rows: 30, seatsPerRow: 48, price: 440 },
-      { id: "L5", name: "Section 500", type: "STANDARD", rows: 35, seatsPerRow: 48, price: 390 },
-    ]
+  "Allegiant Stadium": {
+    venueName: "Allegiant Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 550 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 550 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 420 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 420 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 240 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 240 },
+    ]),
   },
-  "Stade de France": {
-    venueName: "Stade de France",
-    sections: [
-      { id: "OR", name: "Carré Or", type: "VIP", rows: 10, seatsPerRow: 30, price: 1100 },
-      { id: "CAT1", name: "Catégorie 1", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 860 },
-      { id: "CAT2", name: "Catégorie 2", type: "STANDARD", rows: 20, seatsPerRow: 45, price: 680 },
-      { id: "CAT3", name: "Catégorie 3", type: "STANDARD", rows: 25, seatsPerRow: 50, price: 550 },
-      { id: "PELOUSE", name: "Pelouse Debout", type: "STANDING", rows: 50, seatsPerRow: 100, price: 390, isStanding: true },
-    ]
+  "SoFi Stadium": {
+    venueName: "SoFi Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 800 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 800 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 700 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 700 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 500 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 500 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 400 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 400 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 320 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 320 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+    ]),
   },
-  "Allianz Arena": {
-    venueName: "Allianz Arena",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 38, price: 980 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 38, price: 840 },
-      { id: "L1", name: "Section 100", type: "STANDARD", rows: 15, seatsPerRow: 46, price: 660 },
-      { id: "L2", name: "Section 200", type: "STANDARD", rows: 20, seatsPerRow: 46, price: 540 },
-      { id: "L3", name: "Section 300", type: "STANDARD", rows: 25, seatsPerRow: 46, price: 380 },
-    ]
+  "MetLife Stadium": {
+    venueName: "MetLife Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 700 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 700 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 400 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 400 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 220 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 220 },
+    ]),
   },
-  "Riyadh Air Metropolitano": {
-    venueName: "Riyadh Air Metropolitano",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 38, price: 950 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 38, price: 820 },
-      { id: "L1", name: "Section 100", type: "STANDARD", rows: 15, seatsPerRow: 46, price: 640 },
-      { id: "U1", name: "Section 300", type: "STANDARD", rows: 20, seatsPerRow: 46, price: 380 },
-    ]
-  },
-
-  // --- Tier 4: Value Markets (El Paso, Brussels) ---
-  "Sun Bowl Stadium": {
-    venueName: "Sun Bowl Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 10, seatsPerRow: 35, price: 850 },
-      { id: "L1-B", name: "Section 100", type: "STANDARD", rows: 15, seatsPerRow: 45, price: 720 },
-      { id: "U1", name: "Section 300", type: "STANDARD", rows: 20, seatsPerRow: 45, price: 350 },
-    ]
-  },
-  "King Baudouin Stadium": {
-    venueName: "King Baudouin Stadium",
-    sections: [
-      { id: "FL-ZONE", name: "Standing Floor Zone", type: "STANDING", rows: 40, seatsPerRow: 100, price: 740, isStanding: true },
-      { id: "L1-B", name: "Section 100", type: "STANDARD", rows: 15, seatsPerRow: 45, price: 650 },
-      { id: "U1", name: "Section 300", type: "STANDARD", rows: 20, seatsPerRow: 45, price: 360 },
-    ]
-  },
-  
-  // --- Additional Venues (Based on Maps) ---
   "Gillette Stadium": {
     venueName: "Gillette Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 1000 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 880 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 20, seatsPerRow: 50, price: 700 },
-      { id: "CL", name: "Club Level", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 580 },
-      { id: "300", name: "Section 300", type: "STANDARD", rows: 25, seatsPerRow: 50, price: 420 },
-    ]
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 480 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 480 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+    ]),
   },
   "M&T Bank Stadium": {
     venueName: "M&T Bank Stadium",
-    sections: [
-      { id: "FL-A", name: "Floor A", type: "STANDARD", rows: 12, seatsPerRow: 40, price: 980 },
-      { id: "FL-B", name: "Floor B", type: "STANDARD", rows: 15, seatsPerRow: 40, price: 860 },
-      { id: "100", name: "Section 100", type: "STANDARD", rows: 20, seatsPerRow: 50, price: 680 },
-      { id: "200", name: "Section 200", type: "STANDARD", rows: 25, seatsPerRow: 50, price: 540 },
-      { id: "500", name: "Section 500", type: "STANDARD", rows: 30, seatsPerRow: 50, price: 380 },
-    ]
-  }
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 480 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 480 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 380 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 380 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 260 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 260 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 200 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 200 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 170 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 170 },
+    ]),
+  },
+  "Soldier Field": {
+    venueName: "Soldier Field",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 650 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 650 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 580 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 580 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 400 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 400 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+    ]),
+  },
+  "Rogers Centre": {
+    venueName: "Rogers Centre",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 450 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 450 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+    ]),
+  },
+  "Estadio GNP Seguros": {
+    venueName: "Estadio GNP Seguros",
+    sections: processSections([
+      { id: "101", name: "Sección 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "102", name: "Sección 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "103", name: "Sección 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 450 },
+      { id: "104", name: "Sección 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 450 },
+      { id: "105", name: "Sección 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 400 },
+      { id: "106", name: "Sección 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 400 },
+      { id: "201", name: "Sección 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 300 },
+      { id: "202", name: "Sección 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 300 },
+      { id: "203", name: "Sección 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 220 },
+      { id: "204", name: "Sección 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 220 },
+    ]),
+  },
+
+  "Riyadh Air Metropolitano": {
+    venueName: "Riyadh Air Metropolitano",
+    sections: processSections([
+      { id: "101", name: "Sección 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 650 },
+      { id: "102", name: "Sección 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 650 },
+      { id: "103", name: "Sección 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 580 },
+      { id: "104", name: "Sección 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 580 },
+      { id: "105", name: "Sección 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "106", name: "Sección 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "201", name: "Sección 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 400 },
+      { id: "202", name: "Sección 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 400 },
+      { id: "203", name: "Sección 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+      { id: "204", name: "Sección 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 320 },
+    ]),
+  },
+  "King Baudouin Stadium": {
+    venueName: "King Baudouin Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 480 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 480 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 420 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 280 },
+    ]),
+  },
+  "Allianz Arena": {
+    venueName: "Allianz Arena",
+    sections: processSections([
+      { id: "101", name: "Block 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 680 },
+      { id: "102", name: "Block 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 680 },
+      { id: "103", name: "Block 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "104", name: "Block 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "105", name: "Block 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "106", name: "Block 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 520 },
+      { id: "201", name: "Block 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 420 },
+      { id: "202", name: "Block 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 420 },
+      { id: "203", name: "Block 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "204", name: "Block 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+    ]),
+  },
+  "Stade de France": {
+    venueName: "Stade de France",
+    sections: processSections([
+      { id: "K1", name: "K1", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 650 },
+      { id: "K2", name: "K2", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 650 },
+      { id: "K3", name: "K3", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 580 },
+      { id: "K4", name: "K4", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 580 },
+      { id: "L1", name: "L1", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "L2", name: "L2", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 500 },
+      { id: "M1", name: "M1", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 420 },
+      { id: "M2", name: "M2", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 420 },
+      { id: "N1", name: "N1", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "N2", name: "N2", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 350 },
+      { id: "P1", name: "P1", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "P2", name: "P2", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "P3", name: "P3", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 220 },
+      { id: "P4", name: "P4", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 220 },
+    ]),
+  },
+  "Wembley Stadium": {
+    venueName: "Wembley Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 750 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 750 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 680 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 680 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 600 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 500 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 500 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 420 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 420 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 350 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 350 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 280 },
+      { id: "401", name: "Section 401", type: "STANDARD", rows: 35, seatsPerRow: 45, price: 220 },
+      { id: "402", name: "Section 402", type: "STANDARD", rows: 35, seatsPerRow: 45, price: 220 },
+      { id: "403", name: "Section 403", type: "STANDARD", rows: 35, seatsPerRow: 45, price: 190 },
+      { id: "404", name: "Section 404", type: "STANDARD", rows: 35, seatsPerRow: 45, price: 190 },
+    ]),
+  },
+
+  "Estadio El Campin": {
+    venueName: "Estadio El Campin",
+    sections: processSections([
+      { id: "101", name: "Sección 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "102", name: "Sección 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "103", name: "Sección 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "104", name: "Sección 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "105", name: "Sección 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+      { id: "106", name: "Sección 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+    ]),
+  },
+  "Estadio Nacional (Lima)": {
+    venueName: "Estadio Nacional",
+    sections: processSections([
+      { id: "101", name: "Sección 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "102", name: "Sección 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "103", name: "Sección 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "104", name: "Sección 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "105", name: "Sección 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+      { id: "106", name: "Sección 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+    ]),
+  },
+  "Estadio Nacional (Santiago)": {
+    venueName: "Estadio Nacional",
+    sections: processSections([
+      { id: "101", name: "Sección 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "102", name: "Sección 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "103", name: "Sección 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "104", name: "Sección 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "105", name: "Sección 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "106", name: "Sección 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+    ]),
+  },
+  "Estadio Monumental": {
+    venueName: "Estadio Monumental",
+    sections: processSections([
+      { id: "101", name: "Sección 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 320 },
+      { id: "102", name: "Sección 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 320 },
+      { id: "103", name: "Sección 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "104", name: "Sección 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "105", name: "Sección 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "106", name: "Sección 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "201", name: "Sección 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "202", name: "Sección 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "203", name: "Sección 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 160 },
+      { id: "204", name: "Sección 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 160 },
+    ]),
+  },
+  "Allianz Parque": {
+    venueName: "Allianz Parque",
+    sections: processSections([
+      { id: "101", name: "Setor 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 350 },
+      { id: "102", name: "Setor 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 350 },
+      { id: "103", name: "Setor 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "104", name: "Setor 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "105", name: "Setor 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "106", name: "Setor 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "201", name: "Setor 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "202", name: "Setor 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "203", name: "Setor 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 160 },
+      { id: "204", name: "Setor 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 160 },
+    ]),
+  },
+
+  "National Stadium (Kaohsiung)": {
+    venueName: "National Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 190 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 190 },
+    ]),
+  },
+  "Kai Tak Stadium": {
+    venueName: "Kai Tak Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 400 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 400 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 350 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 350 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 250 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 250 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+    ]),
+  },
+  "Philippine Arena": {
+    venueName: "Philippine Arena",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 180 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 180 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 150 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 150 },
+    ]),
+  },
+  "Rajamangala Stadium": {
+    venueName: "Rajamangala Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 240 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 200 },
+    ]),
+  },
+  "Bukit Jalil National Stadium": {
+    venueName: "Bukit Jalil National Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 190 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 190 },
+    ]),
+  },
+  "National Stadium (Singapore)": {
+    venueName: "National Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 350 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 350 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 250 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 170 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 170 },
+    ]),
+  },
+  "Gelora Bung Karno": {
+    venueName: "Gelora Bung Karno",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 190 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 190 },
+    ]),
+  },
+  "Marvel Stadium": {
+    venueName: "Marvel Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 300 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 260 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 220 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 180 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 180 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 150 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 150 },
+    ]),
+  },
+  "Accor Stadium": {
+    venueName: "Accor Stadium",
+    sections: processSections([
+      { id: "101", name: "Section 101", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 380 },
+      { id: "102", name: "Section 102", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 380 },
+      { id: "103", name: "Section 103", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 320 },
+      { id: "104", name: "Section 104", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 320 },
+      { id: "105", name: "Section 105", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "106", name: "Section 106", type: "STANDARD", rows: 20, seatsPerRow: 30, price: 280 },
+      { id: "201", name: "Section 201", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 240 },
+      { id: "202", name: "Section 202", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 240 },
+      { id: "203", name: "Section 203", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "204", name: "Section 204", type: "STANDARD", rows: 25, seatsPerRow: 35, price: 200 },
+      { id: "301", name: "Section 301", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 160 },
+      { id: "302", name: "Section 302", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 160 },
+      { id: "303", name: "Section 303", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 130 },
+      { id: "304", name: "Section 304", type: "STANDARD", rows: 30, seatsPerRow: 40, price: 130 },
+    ]),
+  },
 };

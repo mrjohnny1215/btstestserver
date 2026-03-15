@@ -16,9 +16,20 @@ export default defineConfig({
     },
   },
   server: {
-    host: true,
+    host: true,                
     port: 5173,
     strictPort: true,
-    allowedHosts: true
+    allowedHosts: [             
+      '.trycloudflare.com',    
+      'localhost',
+      '.ngrok.io',            
+      'all'                    
+    ],
+    cors: true,                 
+  },
+  preview: {
+    host: true,
+    port: 5173,
+    allowedHosts: ['.trycloudflare.com', 'all'],  
   }
 });

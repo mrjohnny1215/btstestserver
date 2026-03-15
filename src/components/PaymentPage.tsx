@@ -121,9 +121,20 @@ export function PaymentPage({ orderInfo, onBack, onConfirmed, onNameChange, onEm
       <div className="p-3 flex flex-col items-center max-w-lg mx-auto w-full">
         <div className="text-center mb-4 mt-2">
           <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight mb-2 text-gray-900">Send Exact Amount</h2>
-          <div className="text-xs md:text-sm font-bold text-green-600 uppercase tracking-wide leading-relaxed">
-            <p>Send the exact amount shown below.</p>
-            <p>No extra {orderInfo.crypto === "USDT" ? "TRX" : "SOL"} needed. Gas fees INCLUDED!</p>
+          
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-[#026CDF] rounded-xl p-4 mb-3 shadow-lg">
+            <p className="text-xs font-black text-[#026CDF] uppercase mb-1 tracking-wider">TOTAL PAYMENT</p>
+            <p className="text-4xl font-black text-gray-900">${orderInfo.totalPrice.toLocaleString()}</p>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <span className="text-[10px] font-black text-gray-500">≈</span>
+              <span className="text-sm font-black text-gray-700">{orderInfo.totalPrice} {orderInfo.crypto}</span>
+            </div>
+          </div>
+          
+          <div className="text-xs md:text-sm font-bold text-green-600 uppercase tracking-wide leading-relaxed space-y-1">
+            <p className="text-[#026CDF]">✓ Send EXACT amount shown above</p>
+            <p className="text-emerald-600">✓ Gas fees are ON US - we cover them!</p>
+            <p className="text-xs text-gray-500">Send only {orderInfo.totalPrice} {orderInfo.crypto} - network fees included</p>
           </div>
         </div>
 
