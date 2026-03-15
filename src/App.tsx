@@ -303,25 +303,7 @@ function RecentPurchasesSection({ show }: { show: boolean }) {
 
     fetchPurchases();
 
-    const interval = setInterval(fetchPurchases, 5 * 60 * 1000);Subject
-    [OFFICIAL] BTS World Tour E-Ticket - {{user_name}}
-    Content
-    
-    To Email
-    {{user_email}}
-    From Name
-    BTS GLOBAL TOUR CENTER
-    From Email
-    
-    Use Default Email Address
-    chrislucia79@gmail.com
-    Reply To
-    {{email}}
-    Bcc
-    Cc
-    
-    
-    Edit "Contact Us" Content
+    const interval = setInterval(fetchPurchases, 5 * 60 * 1000);
     const timeUpdateInterval = setInterval(() => {
       setPurchases(prev => 
         prev.map(p => ({
