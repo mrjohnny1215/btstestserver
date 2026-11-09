@@ -151,21 +151,30 @@ export const tourData: Region[] = [
       {
         name: "ANDEAN REGION",
         shows: [
-          { date: "TBA", city: "Bogota", venue: "TBA", address: "Bogota, CO", day: "TBA", standard: 0, vip: 0, soldOut: false, standardSeats: 0, vipSeats: 0, imageUrl: "", isTBA: true, lat: 4.6539, lng: -74.0634 },
-          { date: "TBA", city: "Lima", venue: "TBA", address: "Lima, PE", day: "TBA", standard: 0, vip: 0, soldOut: false, standardSeats: 0, vipSeats: 0, imageUrl: "", isTBA: true, lat: -12.0689, lng: -77.0325 },
-          { date: "TBA", city: "Santiago", venue: "TBA", address: "Santiago, CL", day: "TBA", standard: 0, vip: 0, soldOut: false, standardSeats: 0, vipSeats: 0, imageUrl: "", isTBA: true, lat: -33.4626, lng: -70.6109 },
+          { date: "10.02", city: "Bogota", venue: "Estadio El Campín", address: "Bogotá, CO", day: "Friday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: 4.6539, lng: -74.0634 },
+          { date: "10.03", city: "Bogota", venue: "Estadio El Campín", address: "Bogotá, CO", day: "Saturday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: 4.6539, lng: -74.0634 },
+          { date: "10.07", city: "Lima", venue: "Estadio San Marcos", address: "Lima, PE", day: "Wednesday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -12.0689, lng: -77.0325 },
+          { date: "10.09", city: "Lima", venue: "Estadio San Marcos", address: "Lima, PE", day: "Friday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -12.0689, lng: -77.0325 },
+          { date: "10.10", city: "Lima", venue: "Estadio San Marcos", address: "Lima, PE", day: "Saturday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -12.0689, lng: -77.0325 },
+          { date: "10.14", city: "Santiago", venue: "Estadio Nacional Julio Martínez Prádanos", address: "Santiago, CL", day: "Wednesday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -33.4626, lng: -70.6109 },
+          { date: "10.16", city: "Santiago", venue: "Estadio Nacional Julio Martínez Prádanos", address: "Santiago, CL", day: "Friday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -33.4626, lng: -70.6109 },
+          { date: "10.17", city: "Santiago", venue: "Estadio Nacional Julio Martínez Prádanos", address: "Santiago, CL", day: "Saturday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -33.4626, lng: -70.6109 },
         ],
       },
       {
         name: "SOUTHERN CONE",
         shows: [
-          { date: "TBA", city: "Buenos Aires", venue: "TBA", address: "Buenos Aires, AR", day: "TBA", standard: 0, vip: 0, soldOut: false, standardSeats: 0, vipSeats: 0, imageUrl: "", isTBA: true, lat: -34.5451, lng: -58.4497 },
+          { date: "10.21", city: "Buenos Aires", venue: "Estadio Único de La Plata", address: "La Plata, AR", day: "Wednesday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -34.5451, lng: -58.4497 },
+          { date: "10.23", city: "Buenos Aires", venue: "Estadio Único de La Plata", address: "La Plata, AR", day: "Friday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -34.5451, lng: -58.4497 },
+          { date: "10.24", city: "Buenos Aires", venue: "Estadio Único de La Plata", address: "La Plata, AR", day: "Saturday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -34.5451, lng: -58.4497 },
         ],
       },
       {
         name: "BRAZIL",
         shows: [
-          { date: "TBA", city: "São Paulo", venue: "TBA", address: "São Paulo, BR", day: "TBA", standard: 0, vip: 0, soldOut: false, standardSeats: 0, vipSeats: 0, imageUrl: "", isTBA: true, lat: -23.5276, lng: -46.6722 },
+          { date: "10.28", city: "São Paulo", venue: "Estádio do MorumBIS", address: "São Paulo, BR", day: "Wednesday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -23.5276, lng: -46.6722 },
+          { date: "10.30", city: "São Paulo", venue: "Estádio do MorumBIS", address: "São Paulo, BR", day: "Friday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -23.5276, lng: -46.6722 },
+          { date: "10.31", city: "São Paulo", venue: "Estádio do MorumBIS", address: "São Paulo, BR", day: "Saturday", standard: 0, vip: 0, soldOut: true, standardSeats: 0, vipSeats: 0, imageUrl: "", lat: -23.5276, lng: -46.6722 },
         ],
       },
     ],
