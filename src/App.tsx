@@ -155,7 +155,7 @@ function HeroSection({ onRecentClick }: { onRecentClick: () => void }) {
 function ShowCard({ show, onBuy }: { show: Show; onBuy: (show: Show) => void }) {
   const isStandardAvailable = show.standardSeats > 0 && !show.isTBA;
   const isVipAvailable = show.vipSeats > 0 && !show.soldOut && !show.isTBA;
-  const isStayTuned = show.isTBA || show.standard === 0;
+  const isStayTuned = Boolean(show.isTBA);
 
   const getCityDisplayName = () => {
     const city = show.city.toUpperCase();
